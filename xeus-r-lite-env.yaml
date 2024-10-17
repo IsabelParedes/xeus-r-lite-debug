@@ -1,0 +1,9 @@
+name: xeus-r-lite
+channels:
+- conda-forge
+dependencies:
+- cmake
+- empack
+- emsdk
+- juptyterlite-xeus
+
