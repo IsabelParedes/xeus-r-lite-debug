@@ -7,12 +7,13 @@ export BUILD_XEUS_LITE=true
 export BUILD_XEUS_R=true
 
 export PREFIX="$PWD/host-env"
+export BUILD_PREFIX=$MAMBA_ROOT_PREFIX/envs/xeus-r-lite
 export EMPACK_PREFIX=$MAMBA_ROOT_PREFIX/envs/xeus-r-lite
 
-export EMCC_DEBUG=1
+export EMCC_DEBUG=0
 
 #-------------------------------------------------------------------------------
-if BUILD_XEUS; then
+if [ "$BUILD_XEUS" = true ]; then
     echo "🍅🍅🍅 Building xeus"
     pushd xeus
         rm -r _build || true
@@ -36,7 +37,7 @@ if BUILD_XEUS; then
 fi
 
 #-------------------------------------------------------------------------------
-if BUILD_XEUS_LITE; then
+if [ "$BUILD_XEUS_LITE" = true ]; then
     echo "⭐⭐⭐ Building xeus-lite"
     pushd xeus-lite
         rm -r _build || true
@@ -62,7 +63,7 @@ if BUILD_XEUS_LITE; then
 fi
 
 #-------------------------------------------------------------------------------
-if BUILD_XEUS_R; then
+if [ "$BUILD_XEUS_R" = true ]; then
     echo "🫘🫘🫘 Building xeus-r"
     pushd xeus-r
         rm -r _build || true
@@ -90,6 +91,7 @@ echo "🍌🍌🍌 All done packaging 🍌🍌🍌"
 #-------------------------------------------------------------------------------
 pushd jupyter-lite
     echo "🫐🫐🫐 Building jupyter-lite"
-    rm -r _output || true
+    rm -r _output .jupyterlite.doit.db || true
     jupyter lite build --XeusAddon.prefix=$PREFIX
+    cp ../host-env/lib/R/lib/libR*.so _output/extensions/@jupyterlite/xeus/static/
 popd
