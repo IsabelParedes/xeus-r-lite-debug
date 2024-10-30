@@ -1,0 +1,22 @@
+* {
+    background: #282d39;
+    color: #b9b9d9;
+    border-color: #202633;
+}
+
+#input_box, #output_box {
+    width: 50%;
+    height: 50px;
+    margin: 10px;
+    border-style: solid;
+    border-width: 1px;
+    background: #3d4455;
+}
+
+#parse_button {
+    width: 20%;
+    margin: 10px;
+    border-style: solid;
+    border-width: 1px;
+    background: #3c4252;
+}

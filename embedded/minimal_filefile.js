@@ -1,4 +1,5 @@
 let fffiles = `
+allR_stuff.R
 ./.ArgsEnv
 /embed-env/lib/R/etc/repositories
 /embed-env/lib/R/etc/Makeconf
@@ -47,7 +48,6 @@ let fffiles = `
 /embed-env/lib/R/include/Rconfig.h
 /embed-env/lib/R/include/Rmath.h
 /embed-env/lib/R/include/Rversion.h
-/embed-env/lib/R/lib/libR.a
 /embed-env/lib/R/lib/libRblas.so
 /embed-env/lib/R/lib/libRlapack.so
 /embed-env/lib/R/library/base/CITATION
@@ -61,6 +61,7 @@ let fffiles = `
 /embed-env/lib/R/library/base/Meta/package.rds
 /embed-env/lib/R/library/base/R/Rprofile
 /embed-env/lib/R/library/base/R/base
+/embed-env/lib/R/library/base/R/other_base
 /embed-env/lib/R/library/base/R/base.rdb
 /embed-env/lib/R/library/base/R/base.rdx
 /embed-env/lib/R/library/base/demo/error.catching.R

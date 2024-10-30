@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 
+#include <emscripten/bind.h>
+
 #include "R.h"
 #include "Rinternals.h"
 #include "Rembedded.h"
@@ -17,6 +19,18 @@ std::string evaluate_expression(const std::string& code) {
         return "no result";
     }
 
+    // std::cout << "[MAIN] printing value" << std::endl;
+    // PrintValue(VECTOR_ELT(parsed, 0));
+    // SEXP list = PROTECT(findVar(Rf_install("list"), R_BaseEnv));
+    // std::cout << "[MAIN] printing list" << std::endl;
+    // // PrintValue(list);
+    // std::cout << TYPEOF(list) << std::endl;
+    // SEXP list2 = PROTECT(Rf_eval(list, R_GlobalEnv));
+    // std::cout << "[MAIN] printing list2" << std::endl;
+    // // PrintValue(list2);
+    // std::cout << TYPEOF(list2) << std::endl;
+
+
     SEXP result = PROTECT(Rf_eval(VECTOR_ELT(parsed, 0), R_GlobalEnv));
 
     std::string result_string{};
@@ -32,8 +46,8 @@ std::string evaluate_expression(const std::string& code) {
     } else {
         result_string = "unsupported result";
     }
-    // std::cout << "[MAIN] Printing results..." << std::endl;
-    // Rf_PrintValue(result);
+    std::cout << "[MAIN] Printing results..." << std::endl;
+    Rf_PrintValue(result);
 
     UNPROTECT(3); // expr, parsed, result
     return result_string;
@@ -50,7 +64,6 @@ int main(int argc, char *argv[]) {
     char *r_argv[] = {
         (char*)("R"),
         (char*)("--no-readline"),
-        (char*)("--gui=none"),
         (char*)("--vanilla")
     };
     int r_argc = sizeof(r_argv) / sizeof(r_argv[0]);
@@ -61,11 +74,20 @@ int main(int argc, char *argv[]) {
     std::string result = evaluate_expression(code);
     std::cout << "[MAIN] Result: " << result << std::endl;
 
-    std::cout << "EVAL " << evaluate_expression("a <- 4") << std::endl;
-    std::cout << "EVAL " << evaluate_expression("b <- 5") << std::endl;
-    std::cout << "EVAL " << evaluate_expression("a * b") << std::endl;
+    std::cout << "EVAL " << evaluate_expression("d1 <- 4") << std::endl;
+    std::cout << "EVAL " << evaluate_expression("d2 <- 5") << std::endl;
+    std::cout << "EVAL " << evaluate_expression("d1 + d2") << std::endl;
     Rf_endEmbeddedR(0);
 
     std::cout << "[MAIN] Done!" << std::endl;
     return 0;
+}
+
+float lerp(float a, float b, float t) {
+    return (1 - t) * a + t * b;
+}
+
+EMSCRIPTEN_BINDINGS(my_module) {
+    emscripten::function("lerp", &lerp);
+    emscripten::function("evaluate_expression", &evaluate_expression);
 }

@@ -5,20 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=2.0">
     <title>R</title>
     <link rel="icon" href="favicon.svg">
-    <style>
-        * {
-            background: #02050C;
-            color: #5757B2;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <h1>Embedded R</h1>
         <p>E<b>rr</b>e con e<b>rr</b>e cigarro, e<b>rr</b>e con e<b>rr</b>e barril. <b>R</b>ápido co<b>rr</b>en los ca<b>rr</b>os ca<b>r</b>gados de azúca<b>r</b> del fe<b>rr</b>oca<b>rr</b>il.</p>
     </div>
+
+    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh;">
+        <input id="input_box" type="text">
+        <button id="parse_button" onclick="innout()">Parse Code</button>
+        <input id="output_box" type="text">
+    </div>
+
     <script>
         console.log("Script is running!");
+        var Module = {};
+
+        function innout() {
+            let code = document.getElementById("input_box").value;
+            console.log("Code: " + code);
+            let result = Module.evaluate_expression(code);
+            document.getElementById("output_box").value = result;
+        }
     </script>
     <script src="minimal_filefile.js"></script>
     <script src="embedded.js"></script>
