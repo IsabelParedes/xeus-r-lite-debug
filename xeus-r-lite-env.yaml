@@ -1,9 +1,13 @@
 name: xeus-r-lite
 channels:
 - conda-forge
+- conda-forge/label/llvm_dev
+- conda-forge/label/llvm_rc
 dependencies:
 - cmake
 - empack
 - emsdk
-- juptyterlite-xeus
+# - conda-forge/label/llvm_dev::flang=19.1.0.rc2
+- jupyterlite-xeus
+# - conda-forge/label/llvm_rc::libllvm19=19.1.0.rc2
 
