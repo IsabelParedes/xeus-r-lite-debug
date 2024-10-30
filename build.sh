@@ -7,7 +7,6 @@ source ~/emsdk/emsdk_env.sh
 export INSTALL_FLANG=false
 export BUILD_XEUS=false
 export BUILD_XEUS_LITE=false
-export BUILD_R=false
 export BUILD_XEUS_R=false
 export BUILD_JUPYTER_LITE=false
 export BUILD_EMBEDDED=true
@@ -82,15 +81,6 @@ if [ "$BUILD_XEUS_LITE" = true ]; then
 fi
 
 #-------------------------------------------------------------------------------
-if [ "$BUILD_R" = true ]; then
-    echo "😈😈😈 Building R"
-    pushd r-source
-        ./build.sh
-    popd
-    echo "😈😈😈 Done"
-fi
-
-#-------------------------------------------------------------------------------
 if [ "$BUILD_XEUS_R" = true ]; then
     echo "🫘🫘🫘 Building xeus-r"
     pushd xeus-r
@@ -124,10 +114,10 @@ if [ "$BUILD_JUPYTER_LITE" = true ]; then
         jupyter lite build --XeusAddon.prefix=$PREFIX --XeusAddon.mounts=/home/ihuicatl/Repos/Xeus/xeus-r-lite/host-env:/
         cp ../host-env/lib/R/lib/libR*.so _output/extensions/@jupyterlite/xeus/static/
 
-        echo "🪅🪅🪅 Setting up the host 🪅🪅🪅"
-        ln -s ../host-env/lib/ lib
+        echo "🫐🫐🫐 Setting up the host"
+        cp ../host-env/lib/R/library/*/libs/*.so _output/extensions/@jupyterlite/xeus/static/
 
-        echo "🪅🪅🪅 Serving 🪅🪅🪅"
+        echo "🫐🫐🫐 Serving"
         python -m http.server
     popd
 fi
@@ -135,10 +125,10 @@ fi
 # jupyter lite serve --XeusAddon.prefix=/home/ihuicatl/Repos/Xeus/xeus-r-lite/host-env --XeusAddon.mounts=/home/ihuicatl/Repos/Xeus/xeus-r-lite/host-env:/
 
 #-------------------------------------------------------------------------------
-export WASM_FLAGS="-sMAIN_MODULE -sWASM_BIGINT -sALLOW_MEMORY_GROWTH=1 -sEXPORTED_RUNTIME_METHODS=callMain,FS,ENV,getEnvStrings,TTY -sFORCE_FILESYSTEM=1 -sINVOKE_RUN=0 -fsanitize=address -sERROR_ON_UNDEFINED_SYMBOLS=0"
+export WASM_FLAGS="-sMAIN_MODULE -sWASM_BIGINT -sALLOW_MEMORY_GROWTH=1 -sEXPORTED_RUNTIME_METHODS=callMain,FS,ENV,getEnvStrings,TTY  -sFORCE_FILESYSTEM=1 -sINVOKE_RUN=0 -sEXIT_RUNTIME=0 -fsanitize=address --bind"
 
 #-lRblas -lFortranRuntime -lpcre2-8 -llzma -lbz2 -lz -lrt -ldl -lm -liconv
-export LINK_LIBS="-Lembed-env/lib/R/lib -lR -Lembed-env/lib/ -lRblas -lpcre2-8 -llzma -lbz2 -lz -liconv -ldl -lm -lrt"
+export LINK_LIBS="-Lembed-env/lib/R/lib -lR -Lembed-env/lib/ -lRblas -lpcre2-8 -llzma -lbz2 -lz -liconv -ldl -lm -lrt -lembind"
 
 export HEADER_PATH="-I/home/ihuicatl/Repos/Xeus/xeus-r-lite/host-env/lib/R/include/"
 # -I/home/ihuicatl/emsdk/upstream/emscripten/system/lib/libc/musl/include/"
